@@ -15,5 +15,9 @@
     "Connect"
   ],
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0"
+  }
 }
