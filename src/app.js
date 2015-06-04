@@ -1,30 +1,32 @@
-
-
 var scripts = ['1.js', '2.js', '3.js', '4.js']
-var count = 0
 
-var importScript = (function (oHead) {
+var importScripts = (function (oHead) {
+
+	var count = 0
 
   function loadError (oError) {
     throw new URIError("The script " + oError.target.src + " is not accessible.");
   }
 
-  return function (sSrc, fOnload) {
+  function load(sSrc) {
     var oScript = document.createElement("script");
     oScript.type = "text\/javascript";
     oScript.onerror = loadError;
-    oScript.onload = fOnload
+    oScript.onload = function() { loadWithCheck(sSrc) }
     oHead.appendChild(oScript);
-    oScript.src = sSrc;
+    oScript.src = sSrc[count];
   }
+
+  function loadWithCheck(sSrc) {
+  	if (++count < sSrc.length) load(sSrc)
+  	else allLoaded()
+  }
+
+	return load
 
 })(document.head || document.getElementsByTagName("head")[0]);
 
-
-for (var i = 0; i < scripts.length; i++) {
-	importScript(scripts[i], updateCounter)
-}
-
+importScripts(scripts)
 
 function updateCounter() {
 	count++
